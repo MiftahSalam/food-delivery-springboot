@@ -108,7 +108,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/allOrders")
+    @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<BaseResponse<List<MealTypeDTO>>> getAllOrders(@RequestParam("forDay") String forDay,
             @RequestHeader("Authorization") String token) {
@@ -128,7 +128,7 @@ public class OrderController {
                 .build(), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allOrders")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<BaseResponse<List<MealTypeDTO>>> getOrdering(@RequestParam("forDay") String forDay,
             @RequestHeader("Authorization") String token) {
