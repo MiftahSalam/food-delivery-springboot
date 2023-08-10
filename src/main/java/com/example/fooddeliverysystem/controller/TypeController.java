@@ -1,7 +1,9 @@
 package com.example.fooddeliverysystem.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -150,6 +152,33 @@ public class TypeController {
                 .data(null)
                 .message("failed to update type")
                 .status("not modified")
-                .build(), HttpStatus.BAD_REQUEST);
+                .build(), HttpStatus.NOT_MODIFIED);
+    }
+
+    @CrossOrigin
+    @PutMapping("/regularTypes")
+    public ResponseEntity<BaseResponse<Collection<TypeResponse>>> updateRegularTypes(
+            @RequestBody @Valid List<TypeDTO> typeDTOs) {
+        List<TypeEntity> typeEntities = new ArrayList<>();
+        for (TypeDTO typeDTO : typeDTOs) {
+            typeEntities.add(typeDTO.toEntity());
+        }
+
+        Collection<TypeEntity> updateRegularTypes = typeService.updateRegularTypes(typeEntities);
+        if (updateRegularTypes.isEmpty()) {
+            return new ResponseEntity<>(BaseResponse.<Collection<TypeResponse>>builder()
+                    .data(null)
+                    .message("failed to update type")
+                    .status("not modified")
+                    .build(), HttpStatus.NOT_MODIFIED);
+
+        }
+
+        return new ResponseEntity<>(BaseResponse.<Collection<TypeResponse>>builder()
+                .data(TypeResponse.fromTypeEntities(updateRegularTypes))
+                .message("success to update type")
+                .status("ok")
+                .build(), HttpStatus.OK);
+
     }
 }

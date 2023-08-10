@@ -58,6 +58,7 @@ public class AuthController {
 
             return new ResponseEntity<>(BaseResponse.<LoginResponse>builder()
                     .data(LoginResponse.builder()
+                            .userid(userDTO.getId())
                             .email(loadUserByUsername.getUsername())
                             .imagePath(userDTO.getImagePath())
                             .lastName(userDTO.getLastName())
