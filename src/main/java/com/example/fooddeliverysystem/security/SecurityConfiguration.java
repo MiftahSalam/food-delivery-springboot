@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     // private AuthenticationManager authenticationManager;
 
     @Bean
-    CorsConfigurationSource configurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
 
@@ -36,6 +36,10 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         corsConfiguration.setAllowedHeaders(
                 Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+        // corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
 
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 
@@ -75,7 +79,9 @@ public class SecurityConfiguration {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        httpSecurity.csrf().disable().cors().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 // .authenticationManager(authenticationManager)
                 .authorizeRequests().requestMatchers("/**").permitAll().anyRequest().authenticated();
         httpSecurity.addFilterBefore(authTokenFilterBean(httpSecurity), UsernamePasswordAuthenticationFilter.class);
