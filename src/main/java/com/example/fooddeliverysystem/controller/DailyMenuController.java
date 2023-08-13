@@ -40,7 +40,7 @@ public class DailyMenuController {
                     .data(null)
                     .message("Empty daily menu")
                     .status("No content")
-                    .build(), HttpStatus.NO_CONTENT);
+                    .build(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(BaseResponse.<DailyMenuResponse>builder()
                     .data(DailyMenuResponse.fromDailyMenuEntity(dailyMenuForToday))
