@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public String getFrontendUrl() {
-        return environment.getProperty("frontend.url");
+        return environment.getProperty("url.frontend");
     }
 
     @Override
@@ -97,11 +97,15 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(newUserEntity);
 
-        try {
-            sendConfirmationMail(newUserEntity);
-        } catch (Exception e) {
-            System.out.println("error sending confirmation email"); // temporary
-        }
+        // var thread = new Thread(() -> {
+        // try {
+        // sendConfirmationMail(newUserEntity);
+        // } catch (Exception e) {
+        // System.out.println("error sending confirmation email"); // temporary
+        // }
+        // });
+        // thread.start();
+        sendConfirmationMail(newUserEntity);
 
         return newUserEntity;
     }
@@ -318,6 +322,7 @@ public class UserServiceImpl implements UserService {
         StringBuilder messageBodyBuilder = new StringBuilder();
         messageBodyBuilder.append(getConfirmationMailBody());
         messageBodyBuilder.append(getLoginUrl() + "?token=" + confirmationTokenEntity.getConfirmedToken());
+        messageBodyBuilder.append("\n\n");
         messageBodyBuilder.append(getMailFooter());
 
         mailMessage.setText(messageBodyBuilder.toString());

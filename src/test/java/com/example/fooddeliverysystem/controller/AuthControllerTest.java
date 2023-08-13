@@ -80,7 +80,7 @@ public class AuthControllerTest extends BaseControllerMockMVCTest {
 
     @Test
     void testRegister() throws JsonProcessingException, Exception {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO("usernew@example.com", "secret", "newUser", "baru",
+        UserRegisterDTO userRegisterDTO = new UserRegisterDTO("salam.miftah@gmail.com", "secret", "newUser", "baru",
                 "https://iamge.default.png");
 
         mockMvc.perform(post("/auth/register")
@@ -95,7 +95,7 @@ public class AuthControllerTest extends BaseControllerMockMVCTest {
 
                     assertNotNull(response.getData());
                     assertEquals("You need to verify your account. Please check your email.", response.getData());
-                    assertNotNull(userRepository.findFirstByEmail("usernew@example.com").orElse(null));
+                    assertNotNull(userRepository.findFirstByEmail("salam.miftah@gmail.com").orElse(null));
                 });
     }
 }
