@@ -19,6 +19,8 @@ import com.example.fooddeliverysystem.model.response.BaseResponse;
 import com.example.fooddeliverysystem.model.response.WeeklyMenuResponse;
 import com.example.fooddeliverysystem.service.menu.WeeklyMenuService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("weekly-menu")
 public class WeeklyMenuController {
@@ -29,7 +31,7 @@ public class WeeklyMenuController {
         @PostMapping()
         @PreAuthorize("hasAuthority('ADMIN')")
         public ResponseEntity<BaseResponse<WeeklyMenuResponse>> saveWeeklyMenu(
-                        @RequestBody CreateWeeklyMenuDTO weeklyMenuDTO) {
+                        @RequestBody @Valid CreateWeeklyMenuDTO weeklyMenuDTO) {
                 WeeklyMenuEntity weeklyMenuEntity = weeklyMenuService.saveWeeklyMenu(weeklyMenuDTO);
                 if (weeklyMenuEntity == null) {
                         return new ResponseEntity<>(

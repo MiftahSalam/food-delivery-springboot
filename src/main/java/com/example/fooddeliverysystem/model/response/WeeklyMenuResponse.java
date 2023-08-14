@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.example.fooddeliverysystem.entity.DailyMenuEntity;
 import com.example.fooddeliverysystem.entity.WeeklyMenuEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,10 @@ import lombok.NoArgsConstructor;
 public class WeeklyMenuResponse {
     private Long id;
 
+    @JsonProperty(value = "from")
     private Date dateFrom;
 
+    @JsonProperty(value = "to")
     private Date dateTo;
 
     private String imagePath;
