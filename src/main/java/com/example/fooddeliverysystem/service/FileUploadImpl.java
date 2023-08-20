@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileUploadImpl implements FileUpload {
     private static final String WEEKLY_MENU_PATH = "./src/main/resources/webapp/upload/weeklymenuimages/";
-    private static final String AVATAR_PATH = "./src/main/resources/webapp/upload/dailymenuimages/";
+    private static final String AVATAR_PATH = "./src/main/resources/webapp/upload/userimages/";
 
     @Override
     public String uploadFile(MultipartFile uploadFile, String fileType) {
