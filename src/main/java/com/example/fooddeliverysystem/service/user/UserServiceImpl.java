@@ -216,15 +216,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setEmail(email);
         userRepository.save(userEntity);
 
-        try {
-            sendConfirmationMail(userEntity);
-        } catch (Exception e) {
-            // return new ResponseEntity<String>("error sending confirmation email",
-            // HttpStatus.INTERNAL_SERVER_ERROR);
-            System.out.println("error sending confirmation email"); // temporary
-        }
-
-        return new ResponseEntity<String>("You need to verify your account again. Please check email", HttpStatus.OK);
+        return new ResponseEntity<String>("Success change email. You need to login again", HttpStatus.OK);
     }
 
     @Override
@@ -270,9 +262,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByEmail(String email) {
         UserEntity userEntity = userRepository.findFirstByEmailAndStatus(email, UserStatus.ACTIVE).orElse(null);
         if (userEntity != null) {
-            if (userEntity.getImagePath() != null) {
-                userEntity.setImagePath(new String(Base64.decodeBase64(userEntity.getImagePath())));
-            }
+            // if (userEntity.getImagePath() != null) {
+            // userEntity.setImagePath(new
+            // String(Base64.decodeBase64(userEntity.getImagePath())));
+            // }
 
             return UserDTO.mapper(userEntity);
         }
