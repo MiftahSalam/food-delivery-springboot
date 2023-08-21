@@ -110,18 +110,18 @@ public class OrderController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<BaseResponse<List<MealTypeDTO>>> getAllOrders(@RequestParam("forDay") String forDay,
+    public ResponseEntity<BaseResponse<List<OrderResponse>>> getAllOrders(@RequestParam("forDay") String forDay,
             @RequestHeader("Authorization") String token) {
-        List<MealTypeDTO> gerAllOrders = orderingService.gerAllOrders(forDay);
+        List<OrderResponse> gerAllOrders = orderingService.gerAllOrders(forDay);
         if (gerAllOrders.isEmpty()) {
-            return new ResponseEntity<>(BaseResponse.<List<MealTypeDTO>>builder()
+            return new ResponseEntity<>(BaseResponse.<List<OrderResponse>>builder()
                     .data(null)
                     .status("empty")
                     .message("empty orders for day")
                     .build(), HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(BaseResponse.<List<MealTypeDTO>>builder()
+        return new ResponseEntity<>(BaseResponse.<List<OrderResponse>>builder()
                 .data(gerAllOrders)
                 .status("ok")
                 .message("success get orders for day")
@@ -130,27 +130,27 @@ public class OrderController {
 
     @GetMapping("/allOrders")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<BaseResponse<List<MealTypeDTO>>> getOrdering(@RequestParam("forDay") String forDay,
+    public ResponseEntity<BaseResponse<List<OrderResponse>>> getOrdering(@RequestParam("forDay") String forDay,
             @RequestHeader("Authorization") String token) {
         UserEntity user = orderingService.getUser(token);
         if (user == null) {
-            return new ResponseEntity<>(BaseResponse.<List<MealTypeDTO>>builder()
+            return new ResponseEntity<>(BaseResponse.<List<OrderResponse>>builder()
                     .data(null)
                     .status("failed")
                     .message("cannot get order of requested user")
                     .build(), HttpStatus.BAD_REQUEST);
         }
 
-        List<MealTypeDTO> getOrdering = orderingService.getOrdering(forDay, user);
+        List<OrderResponse> getOrdering = orderingService.getOrdering(forDay, user);
         if (getOrdering.isEmpty()) {
-            return new ResponseEntity<>(BaseResponse.<List<MealTypeDTO>>builder()
+            return new ResponseEntity<>(BaseResponse.<List<OrderResponse>>builder()
                     .data(null)
                     .status("empty")
                     .message("empty orders for day")
                     .build(), HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(BaseResponse.<List<MealTypeDTO>>builder()
+        return new ResponseEntity<>(BaseResponse.<List<OrderResponse>>builder()
                 .data(getOrdering)
                 .status("ok")
                 .message("success get ordering")

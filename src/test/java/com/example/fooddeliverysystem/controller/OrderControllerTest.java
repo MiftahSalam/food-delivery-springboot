@@ -20,6 +20,7 @@ import com.example.fooddeliverysystem.repository.UserOrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -133,13 +134,29 @@ public class OrderControllerTest extends BaseControllerMockMVCTest {
                 .header("Authorization", "Bearer " + userToken)
                 .accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk())
                 .andDo(result -> {
-                    // BaseResponse<List<OrderResponse>> response = objectMapper.readValue(
-                    // result.getResponse().getContentAsString(),
-                    // new TypeReference<BaseResponse<List<OrderResponse>>>() {
+                    BaseResponse<List<OrderResponse>> response = objectMapper.readValue(
+                            result.getResponse().getContentAsString(),
+                            new TypeReference<BaseResponse<List<OrderResponse>>>() {
 
-                    // });
+                            });
 
-                    // assertNotNull(response.getData());
+                    assertNotNull(response.getData());
+                    assertEquals(5, response.getData().size());
+                });
+
+        mockMvc.perform(get("/orders/allOrders")
+                .param("forDay", "today")
+                .header("Authorization", "Bearer " + userToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk())
+                .andDo(result -> {
+                    BaseResponse<List<OrderResponse>> response = objectMapper.readValue(
+                            result.getResponse().getContentAsString(),
+                            new TypeReference<BaseResponse<List<OrderResponse>>>() {
+
+                            });
+
+                    assertNotNull(response.getData());
+                    assertEquals(5, response.getData().size());
                 });
     }
 }

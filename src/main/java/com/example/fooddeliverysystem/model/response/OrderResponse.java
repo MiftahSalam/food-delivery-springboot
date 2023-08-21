@@ -24,24 +24,15 @@ public class OrderResponse {
 
     private boolean paid;
 
-    private List<MealTypeResponse> mealTypes;
+    private MealTypeResponse mealType;
 
     private UserDTO user;
 
-    public static OrderResponse fromEntity(UserOrderEntity orderEntity) {
-        List<MealTypeResponse> mealTypeResponses = new ArrayList<>();
-        if (orderEntity.getMealTypes() != null) {
-            for (MealTypeEntity mealTypeEntity : orderEntity.getMealTypes()) {
-                MealTypeResponse mealTypeResponse = MealTypeResponse.fromEntity(mealTypeEntity);
-
-                mealTypeResponses.add(mealTypeResponse);
-            }
-        }
-
+    public static OrderResponse fromEntity(UserOrderEntity orderEntity, MealTypeResponse mealTypeResponse) {
         OrderResponse orderResponse = builder()
                 .date(orderEntity.getDate())
                 .id(orderEntity.getId())
-                .mealTypes(mealTypeResponses)
+                .mealType(mealTypeResponse)
                 .paid(orderEntity.isPaid())
                 .user(UserDTO.mapper(orderEntity.getUser()))
                 .build();
@@ -53,9 +44,12 @@ public class OrderResponse {
             List<UserOrderEntity> orderEntities) {
         List<OrderResponse> orderResponses = new ArrayList<>();
         for (UserOrderEntity orderEntity : orderEntities) {
-
-            orderResponses.add(fromEntity(orderEntity));
-
+            if (orderEntity.getMealTypes() != null) {
+                for (MealTypeEntity mealTypeEntity : orderEntity.getMealTypes()) {
+                    MealTypeResponse mealTypeResponse = MealTypeResponse.fromEntity(mealTypeEntity);
+                    orderResponses.add(fromEntity(orderEntity, mealTypeResponse));
+                }
+            }
         }
 
         return orderResponses;

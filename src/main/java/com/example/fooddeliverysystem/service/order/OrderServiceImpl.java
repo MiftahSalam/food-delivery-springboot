@@ -18,6 +18,8 @@ import com.example.fooddeliverysystem.entity.UserOrderEntity;
 import com.example.fooddeliverysystem.model.dto.MealOrderingDTO;
 import com.example.fooddeliverysystem.model.dto.MealTypeDTO;
 import com.example.fooddeliverysystem.model.dto.UserDTO;
+import com.example.fooddeliverysystem.model.response.MealTypeResponse;
+import com.example.fooddeliverysystem.model.response.OrderResponse;
 import com.example.fooddeliverysystem.repository.MealRepository;
 import com.example.fooddeliverysystem.repository.MealTypeRepository;
 import com.example.fooddeliverysystem.repository.TypeRepository;
@@ -135,7 +137,7 @@ public class OrderServiceImpl implements OrderingService {
     }
 
     @Override
-    public List<MealTypeDTO> getOrdering(String forDay, UserEntity userEntity) {
+    public List<OrderResponse> getOrdering(String forDay, UserEntity userEntity) {
         Date date;
         if (forDay.equals("today")) {
             date = new Date();
@@ -143,16 +145,22 @@ public class OrderServiceImpl implements OrderingService {
             date = getDateForTomorrow(new Date());
         }
 
-        List<MealTypeDTO> mealTypeDTOs = new ArrayList<>();
+        List<OrderResponse> orderResponses = new ArrayList<>();
         List<UserOrderEntity> userOrderEntities = userOrderRepository.findByUserIdAndDate(userEntity.getId(), date);
 
         for (UserOrderEntity userOrderEntity : userOrderEntities) {
             for (MealTypeEntity mealTypeEntity : userOrderEntity.getMealTypes()) {
-                MealTypeDTO mealTypeDTO = new MealTypeDTO();
-                mealTypeDTO.setMealEntity(mealRepository.findById(mealTypeEntity.getMeal().getId()).get());
-                mealTypeDTO.setTypeEntity(typeRepository.findById(mealTypeEntity.getTypeEntity().getId()).get());
-                mealTypeDTO.setUserOrderId(userOrderEntity.getId());
-                mealTypeDTO.setPaid(userOrderEntity.isPaid());
+                OrderResponse orderResponse = new OrderResponse();
+                MealTypeResponse mealTypeResponse = MealTypeResponse.fromEntity(mealTypeEntity);
+
+                orderResponse.setMealType(mealTypeResponse);
+                orderResponse.setId(userOrderEntity.getId());
+                orderResponse.setPaid(userOrderEntity.isPaid());
+
+                // mealTypeDTO.setMealEntity(mealRepository.findById(mealTypeEntity.getMeal().getId()).get());
+                // mealTypeDTO.setTypeEntity(typeRepository.findById(mealTypeEntity.getTypeEntity().getId()).get());
+                // mealTypeDTO.setUserOrderId(userOrderEntity.getId());
+                // mealTypeDTO.setPaid(userOrderEntity.isPaid());
 
                 UserDTO userDTO = new UserDTO();
                 userDTO.setEmail(userOrderEntity.getUser().getEmail());
@@ -163,13 +171,16 @@ public class OrderServiceImpl implements OrderingService {
                 userDTO.setId(userOrderEntity.getUser().getId().intValue());
                 userDTO.setName(userOrderEntity.getUser().getName());
 
-                mealTypeDTO.setUser(userDTO);
+                orderResponse.setUser(userDTO);
+                // mealTypeDTO.setUser(userDTO);
 
-                mealTypeDTOs.add(mealTypeDTO);
+                orderResponses.add(orderResponse);
+                // mealTypeDTOs.add(mealTypeDTO);
             }
         }
 
-        return mealTypeDTOs;
+        return orderResponses;
+        // return mealTypeDTOs;
     }
 
     @Override
@@ -200,8 +211,8 @@ public class OrderServiceImpl implements OrderingService {
     }
 
     @Override
-    public List<MealTypeDTO> gerAllOrders(String forDay) {
-        List<MealTypeDTO> allOrders = new ArrayList<>();
+    public List<OrderResponse> gerAllOrders(String forDay) {
+        List<OrderResponse> allOrders = new ArrayList<>();
 
         for (UserEntity userEntity : userRepository.findAll()) {
             allOrders.addAll(getOrdering(forDay, userEntity));
