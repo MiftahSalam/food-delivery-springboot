@@ -43,7 +43,7 @@ public class UserOrderEntity implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "meal_types_user_orders", inverseJoinColumns = {
-            @JoinColumn(name = "meal_type_id", referencedColumnName = "meal_id"),
+            @JoinColumn(name = "meal_type_id", referencedColumnName = "id"),
     }, joinColumns = @JoinColumn(name = "user_order_id", referencedColumnName = "id"))
     private List<MealTypeEntity> mealTypes = new ArrayList<>();
 

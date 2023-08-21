@@ -117,7 +117,7 @@ ADD CONSTRAINT fk_user_orders_users FOREIGN KEY(userId) REFERENCES users(id);
 CREATE TABLE IF NOT EXISTS meal_types_user_orders (
     meal_type_id SERIAL NOT NULL,
     user_order_id SERIAL NOT NULL,
-    CONSTRAINT fk_meal_types_user_orders FOREIGN KEY (meal_type_id) REFERENCES meals_types(mt_id),
+    CONSTRAINT fk_meal_types_user_orders FOREIGN KEY (meal_type_id) REFERENCES meals_types(id),
     CONSTRAINT fk_user_orders_meal_types FOREIGN KEY (user_order_id) REFERENCES user_orders(id),
     PRIMARY KEY(meal_type_id, user_order_id)
 );
