@@ -182,7 +182,9 @@ public class ViberServiceImpl implements ViberService {
 
         for (UserOrderEntity userOrderEntity : userOrderEntities) {
             for (MealTypeEntity mealTypeEntity : userOrderEntity.getMealTypes()) {
-                MealEntity mealEntity = mealRepository.findById((long) mealTypeEntity.getId().getMealId()).orElse(null);
+                MealEntity mealEntity = mealRepository.findById((long) mealTypeEntity.getId()).orElse(null);
+                // MealEntity mealEntity = mealRepository.findById((long)
+                // mealTypeEntity.getId().getMealId()).orElse(null);
 
                 if (earlyOrder) {
                     if (!mealEntity.isEarlyOrder()) {
@@ -196,7 +198,9 @@ public class ViberServiceImpl implements ViberService {
 
                 MealTypeDTO mealTypeDTO = new MealTypeDTO();
                 mealTypeDTO.setMealEntity(mealEntity);
-                mealTypeDTO.setTypeEntity(typeRepository.findById((long) mealTypeEntity.getId().getTypeId()).get());
+                mealTypeDTO.setTypeEntity(typeRepository.findById((long) mealTypeEntity.getId()).get());
+                // mealTypeDTO.setTypeEntity(typeRepository.findById((long)
+                // mealTypeEntity.getId().getTypeId()).get());
                 mealTypeDTO.setUserOrderId(0L);
                 mealTypeDTOs.add(mealTypeDTO);
             }

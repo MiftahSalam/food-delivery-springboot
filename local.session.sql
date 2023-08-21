@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS types (
 SELECT *
 FROM types;
 CREATE TABLE IF NOT EXISTS meals_types (
-    mt_id SERIAL NOT NULL UNIQUE,
+    id SERIAL NOT NULL PRIMARY KEY,
+    -- mt_id SERIAL NOT NULL PRIMARY KEY,
     meal_id SERIAL NOT NULL,
     type_entity_id SERIAL NOT NULL,
     CONSTRAINT fk_meals_types FOREIGN KEY (meal_id) REFERENCES meals(id),
-    CONSTRAINT fk_types_meals FOREIGN KEY (type_entity_id) REFERENCES types(id),
-    PRIMARY KEY(meal_id, type_entity_id)
+    CONSTRAINT fk_types_meals FOREIGN KEY (type_entity_id) REFERENCES types(id) -- PRIMARY KEY(meal_id, type_entity_id)
 );
 ALTER TABLE meals_types
     RENAME COLUMN type_id TO type_entity_id;

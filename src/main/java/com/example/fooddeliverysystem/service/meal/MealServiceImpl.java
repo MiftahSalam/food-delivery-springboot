@@ -88,12 +88,14 @@ public class MealServiceImpl implements MealService {
                 newType = typeRepository.save(inserTypeEntity);
             }
 
-            MealTypePK mealTypePK = new MealTypePK();
-            mealTypePK.setTypeId(newType.getId().intValue());
-            mealTypePK.setMealId(mealEntity.getId().intValue());
+            // MealTypePK mealTypePK = new MealTypePK();
+            // mealTypePK.setTypeId(newType.getId().intValue());
+            // mealTypePK.setMealId(mealEntity.getId().intValue());
 
             MealTypeEntity mealTypeEntity = new MealTypeEntity();
-            mealTypeEntity.setId(mealTypePK);
+            // mealTypeEntity.setId(mealTypePK);
+            mealTypeEntity.setMeal(mealEntity);
+            mealTypeEntity.setTypeEntity(newType);
 
             mealTypeRepository.save(mealTypeEntity);
 

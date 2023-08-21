@@ -127,5 +127,19 @@ public class OrderControllerTest extends BaseControllerMockMVCTest {
 
                     assertNotNull(response.getData());
                 });
+
+        mockMvc.perform(get("/orders/all")
+                .param("forDay", "today")
+                .header("Authorization", "Bearer " + userToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk())
+                .andDo(result -> {
+                    // BaseResponse<List<OrderResponse>> response = objectMapper.readValue(
+                    // result.getResponse().getContentAsString(),
+                    // new TypeReference<BaseResponse<List<OrderResponse>>>() {
+
+                    // });
+
+                    // assertNotNull(response.getData());
+                });
     }
 }

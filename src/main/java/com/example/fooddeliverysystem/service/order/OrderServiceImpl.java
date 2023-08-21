@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderingService {
 
     @Override
     public List<UserOrderEntity> ordering(List<MealOrderingDTO> mealOrderingDTOs, UserEntity userEntity) {
-        Date todayDate = new Date(System.currentTimeMillis() - 10_000_000); // mock
+        Date todayDate = new Date(System.currentTimeMillis() - 100_000_000); // mock
         // Date todayDate = new Date();
         if (!checkDate(todayDate)) {
             return null;
@@ -243,11 +243,12 @@ public class OrderServiceImpl implements OrderingService {
     }
 
     private MealTypeEntity getMealType(MealEntity mealEntity, TypeEntity typeEntity) {
-        MealTypePK mealTypePK = new MealTypePK();
-        mealTypePK.setMealId(mealEntity.getId().intValue());
-        mealTypePK.setTypeId(typeEntity.getId().intValue());
+        // MealTypePK mealTypePK = new MealTypePK();
+        // mealTypePK.setMealId(mealEntity.getId().intValue());
+        // mealTypePK.setTypeId(typeEntity.getId().intValue());
 
-        return mealTypeRepository.findById(mealTypePK).orElse(null);
+        // return mealTypeRepository.findById(mealTypePK).orElse(null);
+        return mealTypeRepository.findByMealIdAndTypeEntityId(mealEntity.getId(), typeEntity.getId());
     }
 
     private Date getDateForTomorrow(Date today) {

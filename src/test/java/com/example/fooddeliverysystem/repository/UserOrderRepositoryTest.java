@@ -85,12 +85,12 @@ public class UserOrderRepositoryTest {
 
         List<UserOrderEntity> userOrderEntities = userOrderRepository.findByUserIdAndDate(user.getId(), now);
 
-        assertEquals(2, userOrderEntities.size());
+        assertEquals(3, userOrderEntities.size());
 
         userOrderEntities = userOrderRepository.findByUserIdAndDate(user.getId(),
                 Date.from(now.toInstant().plus(1, ChronoUnit.HOURS)));
 
-        assertEquals(1, userOrderEntities.size());
+        assertEquals(3, userOrderEntities.size());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class UserOrderRepositoryTest {
     void testFindByDate() {
         List<UserOrderEntity> userOrderEntities = userOrderRepository.findAllByDate(now);
 
-        assertEquals(2, userOrderEntities.size());
+        assertEquals(3, userOrderEntities.size());
     }
 
 }

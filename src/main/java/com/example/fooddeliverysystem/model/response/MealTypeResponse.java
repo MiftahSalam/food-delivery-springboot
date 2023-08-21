@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class MealTypeResponse {
-    private MealTypePK id;
+    // private MealTypePK id;
+    private Long id;
 
     private MealResponse mealResponse;
 

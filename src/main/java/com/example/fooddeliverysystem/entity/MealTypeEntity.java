@@ -6,6 +6,10 @@ import java.util.List;
 import io.swagger.annotations.ApiModel;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -24,15 +28,21 @@ public class MealTypeEntity implements Serializable {
     @SuppressWarnings(value = "unused")
     private static final Long SerialVersionID = 1L;
 
-    @EmbeddedId
-    private MealTypePK id;
+    // @EmbeddedId
+    // private MealTypePK id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("meal_id")
+    @JoinColumn(name = "meal_id", referencedColumnName = "id")
+    // @MapsId("meal_id")
     private MealEntity meal;
 
     @ManyToOne
-    @MapsId("type_entity_id")
+    @JoinColumn(name = "type_entity_id", referencedColumnName = "id")
+    // @MapsId("type_entity_id")
     private TypeEntity typeEntity;
 
     @ManyToMany(mappedBy = "mealTypes")
