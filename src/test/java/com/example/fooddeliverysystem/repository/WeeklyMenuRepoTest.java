@@ -1,6 +1,7 @@
 package com.example.fooddeliverysystem.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
@@ -59,7 +60,7 @@ public class WeeklyMenuRepoTest {
             List<WeeklyMenuEntity> weeklyMenuEntities = weeklyMenuRepo
                     .findAllByDateToAfter(Date.from(Instant.now()));
 
-            assertNull(weeklyMenuEntities);
+            assertNotNull(weeklyMenuEntities);
         });
     }
 

@@ -10,5 +10,5 @@ import com.example.fooddeliverysystem.entity.WeeklyMenuEntity;
 public interface WeeklyMenuRepo extends JpaRepository<WeeklyMenuEntity, Long> {
     List<WeeklyMenuEntity> findAllByDateFromAfterAndDateToBefore(Date fromDate, Date toDate);
 
-    List<WeeklyMenuEntity> findAllByDateToAfter(Date fromDate);
+    List<WeeklyMenuEntity> findAllByDateToAfter(Date toDate);
 }
