@@ -72,8 +72,8 @@ public class OrderServiceImpl implements OrderingService {
 
     @Override
     public List<UserOrderEntity> ordering(List<MealOrderingDTO> mealOrderingDTOs, UserEntity userEntity) {
-        Date todayDate = new Date(System.currentTimeMillis() - 100_000_000); // mock
-        // Date todayDate = new Date();
+        // Date todayDate = new Date(System.currentTimeMillis() - 100_000_000); // mock
+        Date todayDate = new Date();
         if (!checkDate(todayDate)) {
             return null;
         }
@@ -223,8 +223,11 @@ public class OrderServiceImpl implements OrderingService {
 
     private boolean checkDateForDeleting(Date dateForCheck) {
         Date today = new Date();
-        Calendar c = Calendar.getInstance();
         Date tomorrow;
+        Date today10am = getDate(new Date(), orderUntilHour, orderUntilMin, 0);
+        Date today5pm = getDate(new Date(), earlyOrderUntilHour, earlyOrderUntilMin, 0);
+
+        Calendar c = Calendar.getInstance();
 
         c.setTime(new Date());
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -233,10 +236,10 @@ public class OrderServiceImpl implements OrderingService {
         c.add(Calendar.DATE, 1);
 
         tomorrow = c.getTime();
-        if (today.after(getDate(new Date(), orderUntilHour, orderUntilMin, 0)) && dateForCheck.before(tomorrow)) {
+        if (today.after(today10am) && dateForCheck.before(tomorrow)) {
             return false;
         } else {
-            return today.after(getDate(new Date(), earlyOrderUntilHour, earlyOrderUntilMin, 0));
+            return today.after(today5pm);
         }
     }
 
@@ -271,8 +274,10 @@ public class OrderServiceImpl implements OrderingService {
     }
 
     private boolean checkDate(Date dateForCheck) {
-        if (dateForCheck.after(getDate(new Date(), orderUntilHour, orderUntilMin, 0))) {
-            return !dateForCheck.after(getDate(new Date(), earlyOrderUntilHour, earlyOrderUntilMin, 0));
+        Date today10am = getDate(new Date(), orderUntilHour, orderUntilMin, 0);
+        Date today5pm = getDate(new Date(), earlyOrderUntilHour, earlyOrderUntilMin, 0);
+        if (dateForCheck.after(today10am)) {
+            return !dateForCheck.after(today5pm);
         }
 
         return true;

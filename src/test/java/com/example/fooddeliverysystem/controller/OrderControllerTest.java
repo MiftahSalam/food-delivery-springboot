@@ -41,6 +41,8 @@ public class OrderControllerTest extends BaseControllerMockMVCTest {
     @Autowired
     private UserOrderRepository userOrderRepository;
 
+    private Long orderIdToDelete = 0L;
+
     @BeforeEach
     void setUp() {
         super.setUp();
@@ -142,6 +144,7 @@ public class OrderControllerTest extends BaseControllerMockMVCTest {
 
                     assertNotNull(response.getData());
                     assertEquals(5, response.getData().size());
+                    orderIdToDelete = response.getData().get(0).getId();
                 });
 
         mockMvc.perform(get("/orders/allOrders")
@@ -158,5 +161,36 @@ public class OrderControllerTest extends BaseControllerMockMVCTest {
                     assertNotNull(response.getData());
                     assertEquals(5, response.getData().size());
                 });
+
+        mockMvc.perform(delete("/orders/" + orderIdToDelete)
+                .header("Authorization", "Bearer " + userToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk())
+                .andDo(result -> {
+                    BaseResponse<String> response = objectMapper.readValue(
+                            result.getResponse().getContentAsString(),
+                            new TypeReference<BaseResponse<String>>() {
+
+                            });
+
+                    assertNotNull(response.getData());
+                    assertEquals("order deleted", response.getData());
+                });
+
+        mockMvc.perform(get("/orders/allOrders")
+                .param("forDay", "today")
+                .header("Authorization", "Bearer " + userToken)
+                .accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk())
+                .andDo(result -> {
+                    BaseResponse<List<OrderResponse>> response = objectMapper.readValue(
+                            result.getResponse().getContentAsString(),
+                            new TypeReference<BaseResponse<List<OrderResponse>>>() {
+
+                            });
+
+                    assertNotNull(response.getData());
+                    assertEquals(4, response.getData().size());
+                });
+
     }
+
 }
